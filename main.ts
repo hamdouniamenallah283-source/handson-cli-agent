@@ -19,6 +19,7 @@ async function createChatCompletion(messages: any[]) {
   const response = await client.chat.completions.create({
     model: "kimi-k2.5",
     messages,
+    tools
   });
   return response;
 }
