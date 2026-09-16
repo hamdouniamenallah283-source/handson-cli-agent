@@ -46,8 +46,17 @@ async function main() {
 
   // TODO (2.2): call createChatCompletion(messages), then read
   // response.choices[0].message.content and print it to stdout.
+
   const response = await createChatCompletion(messages);
-process.stdout.write(response.choices[0].message.content ?? "");
+  const toolCalls = response.choices[0].message.tool_calls;
+
+  if (toolCalls && toolCalls.length >0){
+    const call = toolCalls[0];
+    const args = JSON.parse(call.function.arguments);
+    process.stdout.write(readFile(args.file_path));
+  } else {
+    process.stdout.write(response.choices[0].message.content ?? "");
+  }
 }
 
 main();
