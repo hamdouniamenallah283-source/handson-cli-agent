@@ -1,5 +1,7 @@
 import OpenAI from "openai";
-import tools from "./tools.json"
+import tools from "./tools.json";
+import{ readFileSync } from "node:fs";
+
 const apiKey = process.env.LAB_LLM_API_KEY;
 const baseURL = process.env.LAB_LLM_BASE_URL;
 
@@ -14,7 +16,7 @@ const client = new OpenAI({ apiKey, baseURL });
 
 const readFile = (filePath:string):string => {
   let data = "" ;
-  try {
+  try { 
     data = readFileSync(filePath , "utf8");
   } catch (err){
     console.error(err); 
