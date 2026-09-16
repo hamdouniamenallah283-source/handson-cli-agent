@@ -4,7 +4,7 @@ const apiKey = process.env.LAB_LLM_API_KEY;
 const baseURL = process.env.LAB_LLM_BASE_URL;
 
 if (!apiKey) {
-  throw new Error("LAB_LLM_API_KEY is not set");
+  throw new Error("LAB_LLM_API_KEY is not set"); 
 }
 if (!baseURL) {
   throw new Error("LAB_LLM_BASE_URL is not set");
@@ -12,6 +12,16 @@ if (!baseURL) {
 
 const client = new OpenAI({ apiKey, baseURL });
 
+const readFile = (filePath:string):string => {
+  let data = "" ;
+  try {
+    data = readFileSync(filePath , "utf8");
+  } catch (err){
+    console.error(err); 
+  }
+  return data;
+
+};
 // TODO (2.2): call the model and return its response.
 // - client.chat.completions.create takes { model, messages } (tools comes later).
 // - Use "kimi-k2.5" as the model.
