@@ -24,9 +24,7 @@ const readFile = (filePath:string):string => {
   return data;
 
 };
-// TODO (2.2): call the model and return its response.
-// - client.chat.completions.create takes { model, messages } (tools comes later).
-// - Use "kimi-k2.5" as the model.
+
 async function createChatCompletion(messages: any[]) {
   const response = await client.chat.completions.create({
     model: "kimi-k2.5",
@@ -42,12 +40,15 @@ async function main() {
     throw new Error('usage: your_program.sh -p "<prompt>"');
   }
 
-  const messages = [{ role: "user", content: prompt }];
+ 
 
-  // TODO (2.2): call createChatCompletion(messages), then read
-  // response.choices[0].message.content and print it to stdout.
+ 
+  const message = [{role:"user", content : prompt}]
 
+ while(true){
   const response = await createChatCompletion(messages);
+  message.push(response.choices[0].message);
+
   const toolCalls = response.choices[0].message.tool_calls;
 
   if (toolCalls && toolCalls.length >0){
@@ -58,5 +59,5 @@ async function main() {
     process.stdout.write(response.choices[0].message.content ?? "");
   }
 }
-
+}
 main();
