@@ -44,20 +44,16 @@ async function main() {
 
  
   const message = [{role:"user", content : prompt}]
-
+ 
  while(true){
   const response = await createChatCompletion(messages);
   message.push(response.choices[0].message);
 
   const toolCalls = response.choices[0].message.tool_calls;
 
-  if (toolCalls && toolCalls.length >0){
-    const call = toolCalls[0];
-    const args = JSON.parse(call.function.arguments);
-    process.stdout.write(readFile(args.file_path));
-  } else {
-    process.stdout.write(response.choices[0].message.content ?? "");
-  }
+  if (!toolCalls || toolCalls.length === 0){
+    if(process.env.DEBUG_MESSAGE)
+    
 }
 }
 main();
