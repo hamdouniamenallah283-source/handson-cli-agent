@@ -43,17 +43,21 @@ async function main() {
  
 
  
-  const message = [{role:"user", content : prompt}]
+  const messages = [{role:"user", content : prompt}]
  
  while(true){
   const response = await createChatCompletion(messages);
-  message.push(response.choices[0].message);
+  messages.push(response.choices[0].message);
 
   const toolCalls = response.choices[0].message.tool_calls;
 
   if (!toolCalls || toolCalls.length === 0){
-    if(process.env.DEBUG_MESSAGE)
-    
-}
+    if(process.env.DEBUG_MESSAGES){
+      console.error(JSON.stringify(messages));
+    }
+    process.stdout.write(response.choice[0].message.content ?? "");
+    process.exit(0);
+    }
+    execute_tools(toolCalls , messages);
 }
 main();
