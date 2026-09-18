@@ -34,6 +34,26 @@ async function createChatCompletion(messages: any[]) {
   return response;
 }
 
+
+
+  const execute_tools = (toolCalls : any[])=>{
+    for(const currentTool of toolCalls){
+      const functionName =currentTool.function.name;
+      const functionArgs =JSON.parse(currentTool.function.arguments);
+      if (functionName ==="Read"){
+        const data = readFile(functionArgs.file_path);
+        messages.push({
+          role :"tool",
+          tool_call_id: currentTool.id,
+          content : data
+        });
+      }
+      
+
+    }
+  };
+
+
 async function main() {
   const [, , flag, prompt] = process.argv;
   if (flag !== "-p" || !prompt) {
@@ -45,7 +65,7 @@ async function main() {
  
   const messages = [{role:"user", content : prompt}]
  
- while(true){
+ while (true) {
   const response = await createChatCompletion(messages);
   messages.push(response.choices[0].message);
 
@@ -59,5 +79,6 @@ async function main() {
     process.exit(0);
     }
     execute_tools(toolCalls , messages);
- }}
+ }
+ }
 main();
