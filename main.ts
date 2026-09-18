@@ -59,5 +59,5 @@ async function main() {
     process.exit(0);
     }
     execute_tools(toolCalls , messages);
-}
+ }}
 main();
