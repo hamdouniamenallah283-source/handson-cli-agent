@@ -14,4 +14,22 @@
       "required": ["file_path"]
     }
   }
-}]
+},
+ {
+  "type": "function",
+  "function": {
+    "name": "Write",
+    "description": "Create a new file or overwrite an existing file with the given content . use this to save new files or replace a file's contents entirely.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "file_path": {
+          "type": "string",
+          "description": "Path to the file to write , relative to the current working directory."
+        }
+      },
+      "required": ["file_path","content"]
+    }
+  }
+}
+]
