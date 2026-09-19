@@ -36,7 +36,7 @@ async function createChatCompletion(messages: any[]) {
 
 
 
-  const execute_tools = (toolCalls : any[])=>{
+  const execute_tools = (toolCalls : any[],messages : any)=>{
     for(const currentTool of toolCalls){
       const functionName =currentTool.function.name;
       const functionArgs =JSON.parse(currentTool.function.arguments);
@@ -63,7 +63,7 @@ async function main() {
  
 
  
-  const messages = [{role:"user", content : prompt}]
+const messages = [{role:"user", content : prompt}];
  
  while (true) {
   const response = await createChatCompletion(messages);
@@ -75,7 +75,7 @@ async function main() {
     if(process.env.DEBUG_MESSAGES){
       console.error(JSON.stringify(messages));
     }
-    process.stdout.write(response.choice[0].message.content ?? "");
+    process.stdout.write(response.choices[0].message.content ?? "");
     process.exit(0);
     }
     execute_tools(toolCalls , messages);
