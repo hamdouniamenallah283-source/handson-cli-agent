@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import tools from "./tools.json";
-import{ readFileSync } from "node:fs";
+import{ readFileSync, writeFileSync } from "node:fs";
 
 const apiKey = process.env.LAB_LLM_API_KEY;
 const baseURL = process.env.LAB_LLM_BASE_URL;
@@ -25,6 +25,14 @@ const readFile = (filePath:string):string => {
 
 };
 
+const writeFile = (filePath: string , data: string) => {
+  try{
+    writeFileSync(filePath , data ,"utf8");
+  } catch(err){
+    console.error(err);
+  }
+};
+
 async function createChatCompletion(messages: any[]) {
   const response = await client.chat.completions.create({
     model: "kimi-k2.5",
@@ -47,9 +55,15 @@ async function createChatCompletion(messages: any[]) {
           tool_call_id: currentTool.id,
           content : data
         });
-      }
-      
-
+      } else if (functionName ==="Write"){
+        const {file_path,content} = functionArgs;
+        writeFile(file_path,content);
+        messages.push({
+          role :"tool",
+          tool_call_id: currentTool.id,
+          content,
+        });
+      } 
     }
   };
 
